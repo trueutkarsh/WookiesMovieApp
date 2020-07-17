@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, Button, Image, ImageBackground } from 'react-native';
-
+import ReactStars from "react-rating-stars-component";
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 
@@ -43,6 +43,11 @@ export default function MovieDetailsScreen( { navigation, route }) {
       <Text style={styles.title}> {movieName + "  " + mDATA.rating +"/10"} </Text>
       {/* <Text style={styles.title}> {movieId} </Text>
       <Text style={styles.title}> {mDATA.director} </Text> */}
+      <ReactStars
+        size={20}
+        value={mDATA.rating / 2}
+        edit={false}
+      />
       <View
         style={styles.separator}
         lightColor="#eee"
