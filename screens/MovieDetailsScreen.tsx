@@ -4,35 +4,39 @@ import Stars from 'react-native-stars-rating';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 
+// Temp datafor
+// const mDATA = {
+//   coverImageUrl:
+//     "https://data.logograph.com/resize/LyricTheatre/multimedia/Image/13423/SOFM%202018%20900x600%20Goodfellas.jpg",
 
-const mDATA = {
-  coverImageUrl:
-    "https://data.logograph.com/resize/LyricTheatre/multimedia/Image/13423/SOFM%202018%20900x600%20Goodfellas.jpg",
+//   profileImageUrl:
+//     "https://m.media-amazon.com/images/M/MV5BY2NkZjEzMDgtN2RjYy00YzM1LWI4ZmQtMjIwYjFjNmI3ZGEwXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg",
+//   numStars: 4,
+//   year: 1990,
+//   rating: 8.7,
+//   length: 31,
+//   director: "Martin Scorcese",
+//   cast: "RBD, NP",
+//   description:
+//     "best crime drama ever best crime drama ever best crime drama  asDasdASDasdaSDasdasDasasDasdasDasdasDasdasdasdasDasdASDasdaSDever best crime drama ever best crime drama ever  ",
+// };
 
-  profileImageUrl:
-    "https://m.media-amazon.com/images/M/MV5BY2NkZjEzMDgtN2RjYy00YzM1LWI4ZmQtMjIwYjFjNmI3ZGEwXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg",
-  numStars: 4,
-  year: 1990,
-  rating: 8.7,
-  length: 31,
-  director: "Martin Scorcese",
-  cast: "RBD, NP",
-  description:
-    "best crime drama ever best crime drama ever best crime drama  asDasdASDasdaSDasdasDasasDasdasDasdasDasdasdasdasDasdASDasdaSDever best crime drama ever best crime drama ever  ",
-};
-
-const ratings = {
-  size: 20,
-  edit: false,
-  value: 0
-}
 
 export default function MovieDetailsScreen( { navigation, route }) {
   
-  const {movieId}  = route.params;
-  const { movieName } = route.params;
+  const {item}  = route.params;
+  console.log("Got movie", item.title);
 
-  ratings.value = mDATA.rating / 2;
+  const director = (director) => {
+    if (typeof director === 'string')
+    {
+      return director;
+    }
+    else
+    {
+      return director.join(",")
+    }
+  };
 
   // Find the movie details from another api
   return (
@@ -40,22 +44,22 @@ export default function MovieDetailsScreen( { navigation, route }) {
       <Image
         resizeMode={"cover"}
         source={{
-          uri: mDATA.coverImageUrl,
+          uri: item.backdrop,
         }}
         style={styles.coverImage}
       />
       <Image
         resizeMode={"cover"}
         source={{
-          uri: mDATA.profileImageUrl,
+          uri: item.poster,
         }}
         style={styles.profileImage}
       />
-      <Text style={styles.movieTitle}> {movieName + "  " + mDATA.rating +"/10"} </Text>
+      <Text style={styles.movieTitle}> {item.title + "  " + item.imdb_rating +"/10"} </Text>
       <View style={styles.movieStars}>
         <Stars 
           rateMax={5}
-          rate={mDATA.rating/2}
+          rate={item.imdb_rating/2}
           size={20}
         />
       </View>
@@ -64,7 +68,7 @@ export default function MovieDetailsScreen( { navigation, route }) {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <Text style={styles.movieInfo}> {mDATA.year + " | " + mDATA.length + " | " + mDATA.director}  </Text>
+      <Text style={styles.movieInfo}> {item.released_on.substring(0, 4) + " | " + item.length + " | " + director(item.director)}  </Text>
       {/* <Button
         title="Go to Home"
         onPress={() => {
@@ -72,10 +76,10 @@ export default function MovieDetailsScreen( { navigation, route }) {
         }}
       /> */}
       <Text style={styles.movieCast}>
-        {"Cast: " + mDATA.cast}
+        {"Cast: " + item.cast.join(", ")}
       </Text>
       <Text style={styles.movieDescription}>
-        {"Description: " + mDATA.description}
+        {"Description: " + item.overview}
       </Text>
     </View>
   );
@@ -117,18 +121,20 @@ const styles = StyleSheet.create({
     left: "-25%",
   },
   movieTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     color: "white",
     position: "relative",
     top: "-13%",
-    right: "-9%",
+    right: "-13%",
     backgroundColor: "black",
+    width: 200,
+    textAlign: "center"
   },
   movieStars: {
     position: "relative",
     top: "-12%",
-    left: "5%",
+    left: "13%",
   },
   movieInfo: {
     position: "relative",
@@ -142,6 +148,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     marginHorizontal: 30,
     fontSize: 18,
+    marginVertical: 5,
   },
   movieDescription: {
     position: "absolute",
@@ -149,5 +156,6 @@ const styles = StyleSheet.create({
     textAlign: "left",
     marginHorizontal: 30,
     fontSize: 18,
+    marginVertical: 18
   },
 });
