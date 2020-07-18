@@ -17,3 +17,16 @@ export type SearchParamList = {
   SearchScreen: undefined;
   MovieDetailsScreen: undefined;
 };
+
+export type MovieListProps = {
+  navigation: any
+}
+
+export type MovieItemParamlist = {
+  data: undefined,
+  onPress: undefined
+}
+
+export type MovieListState = {
+  movies: any,
+}

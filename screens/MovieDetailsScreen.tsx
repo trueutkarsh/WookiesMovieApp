@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
     position: "relative",
-    top: "-15%",
+    top: "-13%",
     right: "-9%",
     backgroundColor: "black",
   },

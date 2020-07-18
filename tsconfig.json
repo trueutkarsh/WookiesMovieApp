@@ -10,6 +10,21 @@
     "strict": true,
     "typeRoots": [
       "./@types"
-    ]
-  }
+    ],
+  },
+  "exclude": [
+    "typings/browser.d.ts",
+    "typings/browser",
+    "node_modules"
+  ],
+  "include": [
+    "components/*",
+    "constants/*",
+    "data/*",
+    "hooks/*",
+    "navigation/*",
+    "screens/*",
+    "App.tsx",
+    "types.tsx"
+  ]
 }
