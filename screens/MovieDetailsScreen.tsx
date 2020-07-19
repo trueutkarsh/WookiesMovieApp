@@ -141,6 +141,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontStyle: "italic",
     top: "-18%",
+    textAlign: "center"
   },
   movieCast: {
     position: "relative",
