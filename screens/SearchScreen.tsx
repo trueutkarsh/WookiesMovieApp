@@ -3,13 +3,14 @@ import { StyleSheet } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
+import MovieSearchList from "../components/MovieSearchList";
 
-export default function SearchScreen() {
+export default function SearchScreen({navigation}) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Search</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/SearchScreen.tsx" />
+      {/* <Text style={styles.title}>Search Collection</Text> */}
+      {/* <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" /> */}
+      <MovieSearchList navigation={navigation}/>
     </View>
   );
 }
@@ -17,16 +18,17 @@ export default function SearchScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    margin: 20
   },
   title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 25,
+    fontWeight: "bold",
   },
   separator: {
-    marginVertical: 30,
+    marginVertical: 10,
     height: 1,
-    width: '80%',
+    width: "80%",
   },
 });

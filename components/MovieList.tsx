@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Text, View } from "../components/Themed";
 
-import getMovies from "../data/Data";
+import {getMovies} from "../data/Data";
 import { MovieListProps, MovieListState } from "../types";
 
 export default class MovieList extends React.Component<MovieListProps, MovieListState> {
@@ -55,7 +55,7 @@ export default class MovieList extends React.Component<MovieListProps, MovieList
     movies = movies.item;
     let genre = Object.keys(movies)[0];
     const movielist = movies[genre];
-    console.log("Got movie genre list", movies);
+    // console.log("Got movie genre list", movies);
     return (
       <View style={styles.movies}>
         <Text>{genre}</Text>
@@ -80,14 +80,14 @@ export default class MovieList extends React.Component<MovieListProps, MovieList
         }
       });
     });
-    console.log("aggregated movies", Object.keys(result));
+    // console.log("aggregated movies", Object.keys(result));
     const finalList = [];
     Object.keys(result).forEach((genre) => {
       const temp = {};
       temp[genre] = result[genre];
       finalList.push(temp);
     });
-    console.log("final list", finalList);
+    // console.log("final list", finalList);
     return finalList;
   }
 

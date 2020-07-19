@@ -30,3 +30,14 @@ export type MovieItemParamlist = {
 export type MovieListState = {
   movies: any,
 }
+
+export type MovieSearchListState = {
+  movies: any,
+  loading: boolean,
+  query: any
+}
+
+export type MovieSearchListProps = {
+  navigation: any
+}
+
