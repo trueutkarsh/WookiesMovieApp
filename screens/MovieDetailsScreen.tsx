@@ -25,7 +25,6 @@ import { Text, View } from '../components/Themed';
 export default function MovieDetailsScreen( { navigation, route }) {
   
   const {item}  = route.params;
-  console.log("Got movie", item.title);
 
   const director = (director) => {
     if (typeof director === 'string')

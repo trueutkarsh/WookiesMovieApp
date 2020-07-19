@@ -12,7 +12,6 @@ import { Text, View } from "../components/Themed";
 import { searchMovies } from "../data/Data";
 import { MovieSearchListState, MovieSearchListProps } from "../types";
 import { TextInput } from "react-native-gesture-handler";
-import { Icon } from "react-native-vector-icons/Icon";
 
 
 export default class MovieSearchList extends React.Component<
@@ -30,14 +29,12 @@ export default class MovieSearchList extends React.Component<
     this.renderItem = this.renderItem.bind(this);
     this.renderHeader = this.renderHeader.bind(this);
     this.makeSearchRequest("");
-    console.log("search elemtn loaded");
   }
 
   makeSearchRequest(entry) {
     entry = entry || "";
     searchMovies(entry)
       .then((result) => {
-          console.log("movie search", this.state.query, result)
         this.setState({
           loading: false,
           movies: result.movies,
@@ -45,7 +42,6 @@ export default class MovieSearchList extends React.Component<
         });
       })
       .catch((error) => {
-          console.log("error in searching", error);
         this.setState({
           loading: false,
           movies: [],
@@ -55,7 +51,6 @@ export default class MovieSearchList extends React.Component<
   }
 
   goToDetailScreen(item) {
-    console.log("Detail button pressed for ", item.title);
     this.props.navigation.navigate("MovieDetailsScreen", { item });
   }
 

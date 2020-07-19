@@ -30,7 +30,6 @@ export default class MovieList extends React.Component<MovieListProps, MovieList
   }
 
   goToDetailScreen(item) {
-    console.log("Detail button pressed for ", item.title);
     this.props.navigation.navigate("MovieDetailsScreen", { item });
   }
 

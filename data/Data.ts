@@ -33,7 +33,6 @@ export function searchMovies(entry) {
         headers: headers
     })
     .then(response => {
-        console.log("Response from search", response.toString())
         return response.json()
     })
     .catch((error) => 
