@@ -1,86 +1,8 @@
 import * as React from 'react';
 import { StyleSheet, Button, FlatList, TouchableOpacity, Image} from 'react-native';
-import MovieListItem from '../components/MovieListItem';
-import EditScreenInfo from '../components/EditScreenInfo';
+
 import { Text, View } from '../components/Themed';
-import getMovies from  '../data/Data';
-import { MovieListProps, MovieListState } from '../types';
-
-
-class MovieList extends React.Component<MovieListProps, MovieListState> {
-
-  constructor(props: MovieListProps)
-  {
-    super(props);
-    this.state = {
-      movies: []
-    }
-    this.goToDetailScreen = this.goToDetailScreen.bind(this);
-    this.renderItem = this.renderItem.bind(this);
-  }
-
-  componentDidMount()
-  {
-
-    getMovies().then((data) => {
-      this.setState({
-        "movies": data.movies
-      })
-    });
-  }
-
-  goToDetailScreen(item)
-  {
-    console.log("Detail button pressed for ", item.title)
-    this.props.navigation.navigate("MovieDetailsScreen", { item });
-  }
-
-  renderItem(item: any) {
-      const data = item.item;
-      console.log("got item", item)
-      return (
-        <TouchableOpacity onPress={() => this.goToDetailScreen(data)}>
-          <View style={styles.item}>
-                <Image
-                    source={{
-                      uri: data.backdrop
-                    }}
-                    style={styles.movieIcon}
-                />
-              <Text style={styles.movieIconTitle}> {data.title} </Text>
-          </View>
-        </TouchableOpacity>
-    ); 
-
-  }
-
-
-  render() {
-    if (this.state.movies === [])
-    {
-      return (
-        <Text style={styles.title}>
-          {"Loading movies..."}
-        </Text>
-      )
-    }
-    else 
-    {
-      console.log("Num movies now", this.state.movies.length)
-      // console.log("movies now", this.state.movies[0])
-      console.log("movie", this.state.movies[0])
-      return (
-        <FlatList
-          data={this.state.movies}
-          renderItem={this.renderItem.bind(this)}
-          keyExtractor={(item) => item.id}
-          horizontal={true}
-        />
-      )
-    }
-  }
-
-};
+import MovieList from '../components/MovieList';
 
 
 export default function HomeScreen( { navigation } ) {
@@ -96,16 +18,6 @@ export default function HomeScreen( { navigation } ) {
       <MovieList
         navigation={navigation}
       />
-
-      <Button
-        title="Go to Movie details"
-        onPress={() => {
-          navigation.navigate("MovieDetailsScreen", {
-            movieId: "ABC123",
-            movieName: "Goodfellas",
-          });
-        }}
-      />
     </View>
   );
 }
@@ -119,23 +31,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
+    marginTop: 10
   },
   separator: {
-    marginVertical: 10,
+    marginVertical: 5,
     height: 1,
     width: "80%",
-  },
-  movieIcon: {
-    width: 100,
-    height: 100,
-  },
-  movieIconTitle: {
-    fontSize: 10,
-    fontWeight: "bold",
-    color: "white",
-    width: 100,
-  },
-  item: {
-    margin: 5,
   },
 });
