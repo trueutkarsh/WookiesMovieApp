@@ -29,6 +29,7 @@ export type MovieItemParamlist = {
 
 export type MovieListState = {
   movies: any,
+  favourites: any
 }
 
 export type MovieSearchListState = {
@@ -41,3 +42,13 @@ export type MovieSearchListProps = {
   navigation: any
 }
 
+
+export interface FavouriteIconProps
+{
+    callback: any
+}
+
+export interface FavouriteIconState
+{
+    color: any
+}

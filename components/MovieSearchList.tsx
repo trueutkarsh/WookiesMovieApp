@@ -103,49 +103,59 @@ export default class MovieSearchList extends React.Component<
     if (this.state.movies === []) {
       return (
         <View>
-            <Text>Your search results will appear here </Text>
+          <Text>Your search results will appear here </Text>
+          <View
+            style={styles.separator}
+            lightColor="#eee"
+            darkColor="rgba(255,255,255,0.1)"
+          />
         </View>
       );
     } else {
       return (
-      <View style={{ flex: 1 }}>
-        <FlatList
-          data={this.state.movies}
-          keyExtractor={(item) => item.title}
-          ListHeaderComponent={this.renderHeader}
-          renderItem={this.renderItem.bind(this)}
-          extraData={this.state}
-          
-        />
-      </View>
+        <View>
+          <View style={{ flex: 1 }}>
+            <FlatList
+              data={this.state.movies}
+              keyExtractor={(item) => item.title}
+              ListHeaderComponent={this.renderHeader}
+              renderItem={this.renderItem.bind(this)}
+              extraData={this.state}
+            />
+          </View>
+        </View>
       );
     }
   }
 }
 
 const styles = StyleSheet.create({
-    item: {
-        margin: 5,
-        display: "flex",
-        flexDirection: 'row'
-    },
-    movieIcon: {
-        width: 75,
-        height: 75,
-    },
-    movieIconTitle: {
-        position: "relative",
-        fontSize: 15,
-        fontWeight: "bold",
-        color: "white",
-        top: 20
-    },
-    searchBar: {
-        backgroundColor: "black",
-        color: "white",
-        fontSize: 20,
-        marginBottom: 20,
-        textAlign: "left",
-        position: "relative"
-    }
+  item: {
+    margin: 5,
+    display: "flex",
+    flexDirection: "row",
+  },
+  movieIcon: {
+    width: 75,
+    height: 75,
+  },
+  movieIconTitle: {
+    position: "relative",
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "white",
+    top: 20,
+  },
+  searchBar: {
+    backgroundColor: "black",
+    color: "white",
+    fontSize: 20,
+    marginBottom: 20,
+    textAlign: "left",
+    position: "relative",
+  },
+  separator: {
+    position: "relative",
+    color: "white"
+  },
 });

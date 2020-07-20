@@ -4,7 +4,7 @@
     "slug": "WookiesMoviesApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/wookiemoviesappicon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -22,7 +22,10 @@
       "supportsTablet": true
     },
     "web": {
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/wookiemoviesappicon.png"
+    },
+    "android": {
+      "package": "com.trueutkarsh.WookiesMoviesApp"
     }
   }
 }
