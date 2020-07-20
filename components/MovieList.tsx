@@ -10,50 +10,7 @@ import { Text, View } from "../components/Themed";
 import { AntDesign } from "@expo/vector-icons";
 import {getMovies} from "../data/Data";
 import { MovieListProps, MovieListState, FavouriteIconProps, FavouriteIconState } from "../types";
-import { Icon } from "react-native-vector-icons/Icon";
-import { SlideFromRightIOS } from "@react-navigation/stack/lib/typescript/src/TransitionConfigs/TransitionPresets";
 
-
-class FavouriteIcon extends React.Component<FavouriteIconProps, FavouriteIconState> {
-
-    constructor(props)
-    {
-        super(props);
-        this.state ={
-            color: "white"
-        }
-    }
-
-    onClick()
-    {
-        let color;
-        if (this.state.color == "white")
-        {
-            color = "yellow";
-        }
-        else
-        {
-            color = "white";
-        }
-        this.setState({
-            color: color,
-          });
-        this.props.callback();
-    }
-
-    render()
-    {
-        return (
-            <AntDesign
-              name={"staro"}
-              color={this.state.color}
-              size={30}
-              onPress={() => this.onClick()}
-            />
-        );
-
-    }
-};
 
 
 export default class MovieList extends React.Component<MovieListProps, MovieListState> {
@@ -69,8 +26,11 @@ export default class MovieList extends React.Component<MovieListProps, MovieList
 
   componentDidMount() {
     getMovies().then((data) => {
+      data.movies.forEach((movie) => {
+          movie["favourite"] = false;
+      })
       this.setState({
-        movies: this.aggregateMovies(data.movies)
+        movies: data.movies
       });
     });
   }
@@ -86,32 +46,52 @@ export default class MovieList extends React.Component<MovieListProps, MovieList
       let i = favourites.indexOf(item);
       if (i === -1)
       {
+          item.favourite=true;
           favourites.push(item);
       }
       else
       {
+          item.favourite=false;
           favourites.splice(i, 1);
       }
+      const movies = this.state.movies;
+      movies.forEach((movie) => {
+          if (movie.id === item.id)
+          {
+              movies.favourite = true;
+          }
+      });
+
       this.setState({
           movies: this.state.movies,
           favourites: favourites
       });
-      console.log("Favourites size ", this.state.favourites);
 
   }
 
   renderItem(item: any) {
     const data = item.item;
+    let starcolor = "white";
+    if (data.favourite === true)
+    {
+        starcolor = "red";
+    }
     return (
       <TouchableOpacity onPress={() => this.goToDetailScreen(data)}>
-        <View style={styles.item}>
+        <View>
           <Image
             source={{
               uri: data.backdrop,
             }}
             style={styles.movieIcon}
           />
-          <FavouriteIcon callback={this.favouriteClicked.bind(this, data)} />
+          <AntDesign
+            name={"heart"}
+            color={starcolor}
+            size={20}
+            onPress={() => this.favouriteClicked(data)}
+            style={styles.favouriteIcon}
+          />
           <Text style={styles.movieIconTitle}> {data.title} </Text>
         </View>
       </TouchableOpacity>
@@ -122,7 +102,6 @@ export default class MovieList extends React.Component<MovieListProps, MovieList
     movies = movies.item;
     let genre = Object.keys(movies)[0];
     const movielist = movies[genre];
-    console.log("list rendered again", genre, movielist.length);
     if (movielist.length !== 0)
     {
         return (
@@ -163,6 +142,7 @@ export default class MovieList extends React.Component<MovieListProps, MovieList
       item.genres.forEach((g) => {
         if (g in result) {
           result[g].push(item);
+
         } else {
           result[g] = [item];
         }
@@ -185,8 +165,7 @@ export default class MovieList extends React.Component<MovieListProps, MovieList
         allMovies.push({
             "Favourites": this.state.favourites
         })
-        allMovies.push(...this.state.movies)
-        console.log("Keys of all movies", allMovies.map((item) => Object.keys(item).join(",")))
+        allMovies.push(...this.aggregateMovies(this.state.movies))
         return (
             <FlatList
             data={allMovies}
@@ -205,27 +184,34 @@ const styles = StyleSheet.create({
     color: "white"
   },
   separator: {
-    marginVertical: 10,
     height: 1,
+    position: "relative",
+    top: "-15%",
+    marginTop: 5
   },
   movieIcon: {
+    minWidth:100,
     width: 100,
     height: 100,
+    margin: 5
   },
   movieIconTitle: {
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: "bold",
     color: "white",
     width: 100,
+    bottom: "15%"
   },
   item: {
-    margin: 5,
-  },
-  movies: {
     margin: 5,
   },
   listTitle: {
       fontSize: 15,
       marginLeft: 0
+  },
+  favouriteIcon: {
+    position: "relative",
+    bottom: "15%",
+    right: "-75%"
   }
 });
