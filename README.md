@@ -1,4 +1,4 @@
-# Wookie Movies App Submission
+# Wookie Movies App Submission - Utkarsh Gautam
 ## Deliverables
 * ~~Home screen~~
 * ~~Details screen~~
@@ -9,3 +9,4 @@
 * Top rated movies section added as well
 ## App Info
 ### Link
+* https://expo.io/artifacts/7313fcbe-c67a-4c2d-9e8f-24ef2e52acbf
