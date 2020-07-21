@@ -29,7 +29,6 @@ export type MovieItemParamlist = {
 
 export type MovieListState = {
   movies: any,
-  favourites: any
 }
 
 export type MovieSearchListState = {

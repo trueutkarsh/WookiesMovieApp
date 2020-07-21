@@ -5,6 +5,7 @@ import {
     FlatList,
     TouchableOpacity,
     Image,
+    AsyncStorage
 } from "react-native";
 import { Text, View } from "../components/Themed";
 import { AntDesign } from "@expo/vector-icons";
@@ -18,21 +19,45 @@ export default class MovieList extends React.Component<MovieListProps, MovieList
     super(props);
     this.state = {
       movies: [],
-      favourites: []
     };
     this.goToDetailScreen = this.goToDetailScreen.bind(this);
     this.renderItem = this.renderItem.bind(this);
   }
 
   componentDidMount() {
-    getMovies().then((data) => {
-      data.movies.forEach((movie) => {
-          movie["favourite"] = false;
+    let favourites;
+    this.state = {
+        movies: [],
+    };
+    AsyncStorage.getItem("favourites")
+      .then((value) => {
+        let movies = [];
+        favourites = JSON.parse(value);
+        // AsyncStorage.setItem("favourites", JSON.stringify([]));
+    })
+    .catch((error) => {
+        AsyncStorage.setItem("favourites", JSON.stringify([]));
+    })
+    .finally(() => {
+        getMovies().then((data) => {
+            // let favids = this.state.favourites.map((movie)=)
+            const finalmovies = data.movies;
+            finalmovies.forEach((movie) => {
+                movie["favourite"] = false;
+                favourites.forEach((fav) => {
+                    if (movie.title === fav.title)
+                    {
+                        movie["favourite"] = true;
+                    }
+                });
+            })
+            // data.movies.filter((movie))
+            this.setState({
+                movies: finalmovies,
+            });
+        });
+
       })
-      this.setState({
-        movies: data.movies
-      });
-    });
   }
 
   goToDetailScreen(item) {
@@ -41,32 +66,31 @@ export default class MovieList extends React.Component<MovieListProps, MovieList
 
   favouriteClicked(item)
   {
-      const favourites = this.state.favourites;
+    //   const favourites = this.state.favourites;
     
-      let i = favourites.indexOf(item);
-      if (i === -1)
-      {
-          item.favourite=true;
-          favourites.push(item);
-      }
-      else
-      {
-          item.favourite=false;
-          favourites.splice(i, 1);
-      }
-      const movies = this.state.movies;
-      movies.forEach((movie) => {
-          if (movie.id === item.id)
-          {
-              movies.favourite = true;
-          }
-      });
+    //   let i = favourites.findIndex((fav) => fav.id === item.id );
+    //   if (i === -1)
+    //   {
+    //       item["favourite"] = true;
+    //       favourites.push(item)
+    //     }
+    //     else
+    //     {
+    //       item["favourite"] = false;
+    //       favourites.splice(i, 1);
+    //   }
+    // console.log("fav clicked", item);
+    // const movies = this.state.movies;
+    this.state.movies.filter((mov) => mov.title === item.title).map((mov) => {
+        mov.favourite = !mov.favourite;
+    });
 
-      this.setState({
-          movies: this.state.movies,
-          favourites: favourites
-      });
 
+    this.setState({
+        movies: this.state.movies,
+    });
+
+    AsyncStorage.setItem("favourites", JSON.stringify(this.state.movies.filter((movie) => movie.favourite === true)));
   }
 
   renderItem(item: any) {
@@ -85,6 +109,7 @@ export default class MovieList extends React.Component<MovieListProps, MovieList
             }}
             style={styles.movieIcon}
           />
+
           <AntDesign
             name={"heart"}
             color={starcolor}
@@ -106,7 +131,7 @@ export default class MovieList extends React.Component<MovieListProps, MovieList
     {
         return (
           <View style={styles.movies}>
-            <Text>{genre}</Text>
+            <Text style={styles.title}>{genre}</Text>
             <FlatList
               data={movielist}
               renderItem={this.renderItem.bind(this)}
@@ -162,8 +187,13 @@ export default class MovieList extends React.Component<MovieListProps, MovieList
       return <Text style={styles.title}>{"Loading movies..."}</Text>;
     } else {
         const allMovies = [];
+        // Add Favourites
         allMovies.push({
-            "Favourites": this.state.favourites
+            "Favourites": this.state.movies.filter((mov) => mov.favourite === true)
+        })
+        // Add top movies
+        allMovies.push({
+            "Top Movies": this.state.movies.filter((mov) => mov.imdb_rating >= 8.5)
         })
         allMovies.push(...this.aggregateMovies(this.state.movies))
         return (
@@ -179,9 +209,10 @@ export default class MovieList extends React.Component<MovieListProps, MovieList
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: "bold",
-    color: "white"
+    color: "white",
+    marginLeft: 5
   },
   separator: {
     height: 1,
@@ -200,7 +231,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
     width: 100,
-    bottom: "15%"
+    bottom: "15%",
+    textAlign: "center"
   },
   item: {
     margin: 5,
